@@ -1,0 +1,34 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tallyd"
+version = "0.1.0"
+description = "Detect ongoing calls by watching microphone and camera capture"
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+keywords = ["pipewire", "v4l2", "webcam", "microphone", "privacy", "systemd"]
+classifiers = [
+    "Environment :: No Input/Output (Daemon)",
+    "Intended Audience :: End Users/Desktop",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3",
+    "Topic :: Security",
+]
+# No Python dependencies by design: inotify and VIDIOC_QUERYCAP go through
+# ctypes/fcntl, TOML through stdlib tomllib. The only runtime requirement is
+# the `pw-dump` binary from pipewire, and the camera half works without it.
+dependencies = []
+
+[project.scripts]
+tallyd = "tallyd.__main__:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.data-files]
+"lib/systemd/user" = ["data/tallyd.service"]
+"share/tallyd" = ["data/tallyd.conf.example"]
+"share/doc/tallyd" = ["README.md"]

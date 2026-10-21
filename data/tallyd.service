@@ -1,0 +1,23 @@
+[Unit]
+Description=Detect ongoing calls via microphone and camera capture
+Documentation=file:/usr/share/doc/tallyd/README.md
+PartOf=graphical-session.target
+After=graphical-session.target pipewire.service
+# Degrades gracefully without PipeWire (camera still works), so Wants, not Requires.
+Wants=pipewire.service
+
+[Service]
+Type=notify
+ExecStart=/usr/bin/tallyd
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=15
+
+# Deliberately unhardened: this daemon's entire job is to run the
+# commands in the user's config, so a sandbox here would sandbox those too.
+# PrivateDevices= in particular would hide /dev/video* and break detection
+# outright. The daemon itself needs no privilege beyond the user's own.
+NoNewPrivileges=no
+
+[Install]
+WantedBy=graphical-session.target

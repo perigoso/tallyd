@@ -1,0 +1,37 @@
+# tallyd configuration.
+#
+# Copy to ~/.config/tallyd/tallyd.conf (or /etc/tallyd/tallyd.conf
+# for a system-wide default) and edit. Every key is optional; the values shown
+# are the defaults.
+#
+# Verify detection before wiring anything destructive to it:
+#     tallyd --check
+#     journalctl --user -fu tallyd
+
+[detection]
+# How often the microphone is polled [s].
+# The camera is event-driven and reacts immediately regardless of this.
+# poll_interval = 2.0
+
+# Keep the "in call" state this long after capture stops [s].
+# Prevents the actions from flapping when you mute, or when a browser drops the
+# audio track on mute. Raise it if your meetings have long silent stretches;
+# 0 fires the end action as soon as capture stops.
+# dwell = 10.0
+
+# When PipeWire is missing or broken, stop retrying it at poll_interval after
+# this many consecutive failures and re-probe only every mic_retry_interval
+# instead. The camera keeps working throughout. 0 disables the backoff.
+# mic_failures_before_backoff = 3
+# mic_retry_interval = 30.0
+
+[actions]
+# Shell commands run on each transition. They are spawned, not waited on, so a
+# slow command will not delay detection.
+#
+# Two environment variables are set for them:
+#   TALLYD_STATE    "active" or "inactive"
+#   TALLYD_SOURCES  what triggered it, e.g. "mic:firefox camera:/dev/video0(firefox[1234])"
+#
+# on_call_start = "notify-send 'Call detected' \"$TALLYD_SOURCES\""
+# on_call_end   = "notify-send 'Call ended'"
