@@ -146,6 +146,14 @@ action cannot stall detection.
 keep the stream running, but browser WebRTC may drop the audio track
 on mute, without a dwell, muting yourself would look like the call ending.
 
+### Integrations
+
+The actions are the integration point.
+
+The most useful integration for me is to get the call state into Home Assistant
+as a `binary_sensor`, see [HOMEASSISTANT.md](HOMEASSISTANT.md): one webhook
+and a few lines of YAML, no bespoke integration needed.
+
 ## Run
 
 ```console
